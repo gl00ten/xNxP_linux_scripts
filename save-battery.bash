@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Aggressive power saving for laptops.
+# Aggressive power saving for laptops (works with auto-cpufreq).
 # WARNING: This will temporarily break audio, unload ethernet (r8169) and webcam (uvcvideo),
 #          and stop Docker. Only use when you want maximum battery/runtime.
 
@@ -9,7 +9,11 @@ echo "Current CPU governor(s):"
 cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor 2>/dev/null | sort | uniq -c || echo "  (unable to read)"
 
 sudo powertop --auto-tune
-sudo cpupower frequency-set -g powersave
+
+# auto-cpufreq daemon is active on this system and manages the governor.
+# Use its --force option instead of cpupower so it doesn't fight the change.
+echo "Forcing auto-cpufreq into powersave mode..."
+sudo auto-cpufreq --force powersave
 
 echo "Governor after change:"
 cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo "  (unable to read)"
@@ -39,3 +43,4 @@ sudo systemctl stop docker.service
 
 echo "Power saving steps applied."
 echo "To restore ethernet + webcam later: sudo modprobe r8169 uvcvideo"
+echo "To let auto-cpufreq go back to automatic mode: sudo auto-cpufreq --force reset"
