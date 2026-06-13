@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Make sure only root can run the script
 if [ "$(id -u)" != "0" ]; then
@@ -21,6 +21,7 @@ echo "Updating AUR packages..."
 pamac upgrade -a --noconfirm
 
 # Install missing language packs (adjust the search pattern as needed)
+# WARNING: the glob can match many packages; review before running or narrow the pattern.
 echo "Installing missing language packs..."
 pacman -S --noconfirm $(pacman -Ssq '.*-lang$')
 
@@ -36,7 +37,8 @@ pacman -S --noconfirm $LATEST_KERNEL
 # Remove unused and old packages and dependencies
 echo "Cleaning up old and unused packages..."
 paccache -r
-pacman -Rns $(pacman -Qdtq)
+orphans=$(pacman -Qdtq || true)
+[ -n "$orphans" ] && pacman -Rns $orphans
 
 # Optimize Pacman database by cleaning up the package cache
 echo "Optimizing Pacman database..."

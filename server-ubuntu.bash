@@ -1,8 +1,12 @@
+#!/usr/bin/env bash
+# Debian/Ubuntu server bootstrap notes (run commands manually or adapt).
+# Not a fully automated script.
+
 sudo apt-get update
 #sudo apt install ntp -y 
 sudo apt-get dist-upgrade -y
 
-sudo apt install build-essentials -y 
+sudo apt install build-essential -y 
 sudo apt install curl wget apt-transport-https dirmngr -y
 sudo apt install fail2ban -y
 sudo apt install sudo -y

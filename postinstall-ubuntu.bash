@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-# don't run with sudo or it will install stuff only available to root. Type password as requested.
+# Don't run the whole thing with sudo (some installs expect user). Enter sudo password when prompted.
+# Historical post-install for Debian/Ubuntu (2018-era package list; many bits are outdated).
 ########################################################
-#Run this after you install Debian - Version 2018-05 :)
+# Run this after a fresh Debian/Ubuntu install.
 ########################################################
-
-
-set -v
 
 sudo apt-get update
 #sudo apt-get install -y ntp #no longer neccessary? #TODO check

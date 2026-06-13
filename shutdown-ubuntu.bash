@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-set -v
 
-##Requires user with sudo password
+## Requires sudo. Updates then powers off (Debian/Ubuntu family).
 
 ##Distribution upgrade
 sudo apt-get update
