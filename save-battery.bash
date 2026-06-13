@@ -5,8 +5,14 @@
 
 echo "Applying power saving tweaks..."
 
+echo "Current CPU governor(s):"
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor 2>/dev/null | sort | uniq -c || echo "  (unable to read)"
+
 sudo powertop --auto-tune
 sudo cpupower frequency-set -g powersave
+
+echo "Governor after change:"
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo "  (unable to read)"
 
 # Unload Realtek ethernet driver (saves power when on WiFi)
 echo "Unloading ethernet driver (r8169)..."
