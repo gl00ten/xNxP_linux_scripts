@@ -13,7 +13,7 @@ Small personal collection of Linux admin/maintenance scripts.
 - `ufw-ubuntu.bash` — Quick UFW baseline (deny incoming, allow ssh/http/https).
 
 **Distro-specific (pacman / Manjaro)**
-- `update-manjaro.bash` — System + AUR upgrade, language packs (careful), kernel update attempt, cleanup. **Run as root.**
+- `update_manjaro.bash` — Update manjaro, including aur and flatpaks and cleaning leftovers.
 
 **General / task-specific**
 - `save-battery.bash` — `powertop --auto-tune` + powersave governor (laptops).
