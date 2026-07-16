@@ -1,47 +1,21 @@
 #!/usr/bin/env bash
 
-# Make sure only root can run the script
-if [ "$(id -u)" != "0" ]; then
-    echo "This script must be run as root" 1>&2
-    exit 1
-fi
+echo "=== Updating system + AUR ===" &&
+pamac update --aur --enable-downgrade --force-refresh --no-confirm &&
 
-# Update pacman repositories and upgrade packages
-echo "Updating system packages..."
-pacman -Syu --noconfirm
+echo "=== Updating Flatpaks ===" &&
+flatpak update --assumeyes &&
 
-# Install pamac, an AUR helper, if not already installed
-if ! command -v pamac &> /dev/null; then
-    echo "Installing pamac..."
-    pacman -S --noconfirm pamac
-fi
+echo "=== Cleaning unused Flatpaks ===" &&
+flatpak uninstall --unused --assumeyes &&
 
-# Update AUR packages
-echo "Updating AUR packages..."
-pamac upgrade -a --noconfirm
+echo "=== Removing orphans ===" &&
+pamac remove --orphans --no-confirm || true &&   # || true so it doesn't stop if no orphans
 
-# Install missing language packs (adjust the search pattern as needed)
-# WARNING: the glob can match many packages; review before running or narrow the pattern.
-echo "Installing missing language packs..."
-pacman -S --noconfirm $(pacman -Ssq '.*-lang$')
+echo "=== Cleaning package cache ===" &&
+pamac clean --no-confirm -k 2 &&
 
-# Find the latest stable kernel version and install/update it
-LATEST_KERNEL=$(pamac search -q -a --list | awk '/^linux[0-9]*\s+\S+\s+\S+-[0-9]+$/ {print $1}' | sort -V | tail -n 1)
-if [ -z "$LATEST_KERNEL" ]; then
-    echo "No stable kernel found. Please check your internet connection or package repositories."
-    exit 1
-fi
-echo "Installing/updating to the latest stable kernel: $LATEST_KERNEL..."
-pacman -S --noconfirm $LATEST_KERNEL
+echo "=== Cleaning old AUR build files ===" &&
+pamac clean --buildfiles --no-confirm || true &&
 
-# Remove unused and old packages and dependencies
-echo "Cleaning up old and unused packages..."
-paccache -r
-orphans=$(pacman -Qdtq || true)
-[ -n "$orphans" ] && pacman -Rns $orphans
-
-# Optimize Pacman database by cleaning up the package cache
-echo "Optimizing Pacman database..."
-paccache -ruk0
-
-echo "All tasks completed successfully!"
+echo "=== Update complete! ==="
