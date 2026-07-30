@@ -17,6 +17,8 @@ Small personal collection of Linux admin/maintenance scripts.
 
 **General / task-specific**
 - compression scripts - you want to compress general stuff but not want to waste time compressing uncompressable stuff? Try these. one checks how much you would gain (fast) the other does the full work (slow but real)
+- <img width="691" height="303" alt="image" src="https://github.com/user-attachments/assets/b90585cc-f6de-439e-87da-07dbab464d14" />
+
 - `save-battery.bash` — `powertop --auto-tune` + powersave governor (laptops).
 - `meteor-start.bash` — Launcher for a Meteor bundle at `~/bundle` (edit ports/URLs inside).
 - `install_stuff.pp` — Tiny Puppet example (nginx + Node + Mongo).
