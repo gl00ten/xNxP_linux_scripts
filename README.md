@@ -16,6 +16,7 @@ Small personal collection of Linux admin/maintenance scripts.
 - `update_manjaro.bash` — Update manjaro, including aur and flatpaks and cleaning leftovers.
 
 **General / task-specific**
+- compression scripts - you want to compress general stuff but not want to waste time compressing uncompressable stuff? Try these. one checks how much you would gain (fast) the other does the full work (slow but real)
 - `save-battery.bash` — `powertop --auto-tune` + powersave governor (laptops).
 - `meteor-start.bash` — Launcher for a Meteor bundle at `~/bundle` (edit ports/URLs inside).
 - `install_stuff.pp` — Tiny Puppet example (nginx + Node + Mongo).
