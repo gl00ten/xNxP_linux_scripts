@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
+set -e
 
-echo "=== Updating system + AUR ===" &&
-pamac update --aur --enable-downgrade --force-refresh --no-confirm &&
+# Update Manjaro packages + AUR
+pamac update --aur --enable-downgrade --force-refresh --no-confirm
 
-echo "=== Updating Flatpaks ===" &&
-flatpak update --assumeyes &&
+# Update system-wide Flatpaks
+sudo flatpak update --system --assumeyes
 
-echo "=== Cleaning unused Flatpaks ===" &&
-flatpak uninstall --unused --assumeyes &&
+# Update user Flatpaks
+flatpak update --user --assumeyes
 
-echo "=== Removing orphans ===" &&
-pamac remove --orphans --no-confirm || true &&   # || true so it doesn't stop if no orphans
+# Remove unused Flatpak dependencies
+sudo flatpak uninstall --system --unused --assumeyes
+flatpak uninstall --user --unused --assumeyes
 
-echo "=== Cleaning package cache ===" &&
-pamac clean --no-confirm -k 2 &&
+echo "All updates completed successfully!"
 
-echo "=== Cleaning old AUR build files ===" &&
-pamac clean --buildfiles --no-confirm || true &&
-
-echo "=== Update complete! ==="
